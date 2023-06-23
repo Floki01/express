@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-	Nombre: {
+	name: {
 		type: String,
 		required: true,
 	},
@@ -13,6 +13,14 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	exercises:{
+		type: [mongoose.Schema.Types.Mixed],
+		required: false
+	},
+	record:{
+		type: [mongoose.Schema.Types.Mixed],
+		required: false
+	}
 
 });
 
