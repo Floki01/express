@@ -1,4 +1,3 @@
-import userModel from "../models/user.model.js";
 import exerciseModel  from "../models/exercise.model.js";
 
 export async function eliminarRutina(req, res) {
