@@ -13,9 +13,9 @@ const exerciseShema = new mongoose.Schema({
         type: String,
         required: true
     },
-    user:{
+    routine:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Routine',
         cascade: true
     }
 })

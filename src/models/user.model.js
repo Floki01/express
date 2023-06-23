@@ -13,9 +13,9 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	exercises:[{
+	routines:[{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Exercise',
+		ref: 'Routine',
 	}],
 	record:{
 		type: [mongoose.Schema.Types.Mixed],
