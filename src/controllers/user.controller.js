@@ -1,4 +1,5 @@
 import userModel from "../models/user.model.js";
+import exerciseModel  from "../models/exercise.model.js";
 
 export async function createUser(req, res){
     try{
@@ -15,11 +16,36 @@ export async function createUser(req, res){
 }
 
 export async function createExercise(req, res){
-    const userId = req.body.userId;
-    const ejercicio = req.body.ejercicio;
-    const repeticiones = req.body.repeticiones;
-    const series = req.body.series;
-    console.log(userId);
+
+    try{
+        //Datos necesarios para crear el ejercicio
+        const userId = req.body.userId;
+        const ejercicio = req.body.ejercicio;
+        const repeticiones = req.body.repeticiones;
+        const series = req.body.series;
+
+        const user = await userModel.findById(userId);
+
+        const newExercise = await exerciseModel.create({
+            ejercicio: ejercicio,
+            series: series,
+            repeticiones: repeticiones,
+            user: userId,
+        });
+
+        //Se agrega el ejercicio al usuario.
+        user.exercises.push(newExercise);
+        await user.save()
+
+        return res.status(201).send("ok");
+
+    }catch(error){
+        res.status(500).send({error});
+    }
+
+    
+
+    return res.status(201);
 }
 
 

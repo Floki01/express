@@ -13,10 +13,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	exercises:{
-		type: [mongoose.Schema.Types.Mixed],
-		required: false
-	},
+	exercises:[{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Exercise',
+	}],
 	record:{
 		type: [mongoose.Schema.Types.Mixed],
 		required: false
@@ -25,5 +25,4 @@ const userSchema = new mongoose.Schema({
 });
 
 const userModel = mongoose.model("User", userSchema);
-
 export default userModel;
