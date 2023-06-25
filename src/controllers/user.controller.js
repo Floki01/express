@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import exerciseModel  from "../models/exercise.model.js";
 import routineModel from "../models/routine.model.js";
+import mongoose from "mongoose";
 
 export async function createUser(req, res){
     try{
@@ -18,14 +19,17 @@ export async function createUser(req, res){
 
 export async function createRoutine(req, res){
 
+    const userId = req.body.userId;
+    const routineName = req.body.routineName;
+
     try{
         //Datos necesarios para crear el rutina
-        const userId = req.body.userId;
-        const routineName = req.body.routineName;
-        
-
         const user = await userModel.findById(userId);
-
+        
+        if(!user){
+            return res.status(404).send("El usuario no se encuentra");
+        }
+        
         const newExercise = await routineModel.create({
             name: routineName,
             user: userId
@@ -35,7 +39,7 @@ export async function createRoutine(req, res){
         user.routines.push(newExercise);
         await user.save()
 
-        return res.status(201).send("ok");
+        return res.status(201).send("Rutina creada exitosamente");
 
     }catch(error){
         res.status(500).send({error});
@@ -52,18 +56,29 @@ export async function addExercise(req, res){
     const series = req.body.series;
     const repeticiones = req.body.repeticiones;
 
-    const exercise =await exerciseModel.create({
-        ejercicio: ejercicio,
-        series: series,
-        repeticiones: repeticiones,
-        routine: rutinaId
-    })
+    try{
 
-    const routine = await routineModel.findById(rutinaId);
-    routine.exercises.push(exercise);
-    routine.save();
+        if(!mongoose.Types.ObjectId.isValid(rutinaId)){
+            return res.status(404).send("La rutina no existe");
+        }
+
+        const routine =await routineModel.findById(rutinaId);
+        
+        const exercise =await exerciseModel.create({
+            ejercicio: ejercicio,
+            series: series,
+            repeticiones: repeticiones,
+            routine: rutinaId
+        })
+
+        routine.exercises.push(exercise);
+        routine.save();
 
     
-    return res.status(201).send("ok");
-    
+        return res.status(201).send("Ejercicio agregado a la rutina correctamente");
+
+    }catch(error){
+        res.status(500).send({error});
+    }
+
 }

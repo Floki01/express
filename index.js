@@ -6,6 +6,8 @@ import userRouter from './src/router/user.router.js';
 
 //Ejecutar con npm start
 
+//
+
 const app = express();
 app.use(cors());
 app.use(express.json());
