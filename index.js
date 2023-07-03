@@ -3,6 +3,7 @@ import cors from 'cors';
 import connectDB from './src/configs/mongo.js';
 import authRouter from './src/router/auth.router.js';
 import userRouter from './src/router/user.router.js';
+import adminRouter from './src/router/admin.router.js';
 
 //Ejecutar con npm start
 
@@ -15,7 +16,8 @@ app.use(express.json());
 connectDB();
 
 app.use("/auth", authRouter);
-app.use("/user", userRouter)
+app.use("/user", userRouter);
+app.use("/admin", adminRouter);
 
 app.listen(3000, () => {
     console.log('Servidor Express en funcionamiento en el puerto 3000');

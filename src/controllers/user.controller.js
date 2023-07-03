@@ -2,7 +2,7 @@ import userModel from "../models/user.model.js";
 import exerciseModel  from "../models/exercise.model.js";
 import routineModel from "../models/routine.model.js";
 import mongoose from "mongoose";
-
+import jwt from "jsonwebtoken";
 export async function createUser(req, res){
     try{
         const createdUser = await userModel.create({
@@ -14,6 +14,28 @@ export async function createUser(req, res){
     }
     catch(error){
         res.status(500).send({error});
+    }
+}
+
+export async function login(req, res){
+    const email = req.body.email;
+    const password = req.body.password;
+
+    try{
+        const user = await userModel.findOne({email});
+        if(!user){
+            return res.status(401).send({})
+        }
+
+        if(!user.password === password){
+            return res.status(401).send({})
+        }
+
+        const token = jwt.sign({id:user._id},"secreto",{ expiresIn: '1h' })
+
+        return res.status(201).json({user,token})
+    }catch(error){
+
     }
 }
 

@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
 	record:{
 		type: [mongoose.Schema.Types.Mixed],
 		required: false
+	},
+	rol:{
+		type: String,
+		enum: ['admin', 'user'],
+		default: 'admin'
 	}
 
 });
