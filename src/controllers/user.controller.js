@@ -21,6 +21,33 @@ export async function createUser(req, res){
     }
 }
 
+export async function getUser(req, res) {
+    try {
+        const users = await userModel.find().exec();
+
+        return res.status(200).json(users);
+    } catch (error) {
+        res.status(500).send({ error });
+    }
+}
+
+//solo elimina al usuario no a las rutinas o ejercicos que estan asociadas a la id del user 
+export async function deleteUser(req, res) {
+    try {
+        const userId = req.params.userId;
+        const deletedUser = await userModel.findByIdAndDelete(userId).exec();
+
+        if (!deletedUser) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+
+        return res.status(200).json({ message: "Usuario eliminado exitosamente" });
+    } catch (error) {
+        res.status(500).send({ error });
+    }
+}
+
+
 export async function createRoutine(req, res){
 
     const userId = req.body.userId;
@@ -86,3 +113,5 @@ export async function addExercise(req, res){
     }
 
 }
+
+export default{ createUser, getUser, deleteUser,createRoutine,addExercise}

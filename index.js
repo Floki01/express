@@ -1,5 +1,5 @@
 import express from "express";
-import environment from "./src/configs/environment";
+import environment from "./src/configs/environment.js";
 import authRouter from "./src/router/auth.router.js";
 import { connect } from "./src/configs/mongo.js";
 import userRouter from "./src/router/user.router.js";

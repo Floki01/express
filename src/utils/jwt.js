@@ -1,5 +1,5 @@
 import jsonwebtoken from "jsonwebtoken";
-import environment from "../config/environment.js";
+import environment from "../configs/environment.js";
 
 const { SECRET } = environment;
 
