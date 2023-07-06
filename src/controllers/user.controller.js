@@ -3,6 +3,9 @@ import exerciseModel  from "../models/exercise.model.js";
 import routineModel from "../models/routine.model.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+
+
+
 export async function createUser(req, res){
     try{
         const createdUser = await userModel.create({
@@ -23,19 +26,19 @@ export async function login(req, res){
 
     try{
         const user = await userModel.findOne({email});
+        
         if(!user){
-            return res.status(401).send({})
+            return res.status(401).send({error:"error"})
         }
 
         if(!user.password === password){
-            return res.status(401).send({})
+            return res.status(401).send({error:"error"})
         }
-
         const token = jwt.sign({id:user._id},"secreto",{ expiresIn: '1h' })
 
-        return res.status(201).json({user,token})
+        return res.status(201).json({user, token})
     }catch(error){
-
+        return res.status(201);
     }
 }
 
@@ -66,9 +69,17 @@ export async function createRoutine(req, res){
     }catch(error){
         res.status(500).send({error});
     }
-
 }
 
+export async function getUser(req, res){
+    const id = req.userId
+    try{
+        const user = await userModel.findById(id);
+        return res.status(200).send(user);
+    }catch(error){
+
+    }
+}
 
 export async function addExercise(req, res){
 
