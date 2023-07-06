@@ -1,22 +1,24 @@
-import express from 'express';
-import cors from 'cors';
-import connectDB from './src/configs/mongo.js';
-import authRouter from './src/router/auth.router.js';
-import userRouter from './src/router/user.router.js';
+import express from "express";
+import environment from "./src/configs/environment";
+import authRouter from "./src/router/auth.router.js";
+import { connect } from "./src/configs/mongo.js";
+import userRouter from "./src/router/user.router.js";
 
-//Ejecutar con npm start
+const { PORT } = environment;
 
-//
+const server = express();
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+server.use(express.json());
 
-connectDB();
+server.use("/auth", authRouter);
+server.use("/user", userRouter);
 
-app.use("/auth", authRouter);
-app.use("/user", userRouter)
-
-app.listen(3000, () => {
-    console.log('Servidor Express en funcionamiento en el puerto 3000');
-});
+connect()
+	.then(() => {
+		server.listen(PORT, () => {
+			console.log(`Server is running on ${PORT}`);
+		});
+	})
+	.catch((err) => {
+		console.log(err);
+	});
