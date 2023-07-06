@@ -2,13 +2,17 @@ import userModel from "../models/user.model.js";
 import exerciseModel  from "../models/exercise.model.js";
 import routineModel from "../models/routine.model.js";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 export async function createUser(req, res){
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
     try{
         const createdUser = await userModel.create({
             name: req.body.name,
             email:req.body.email,
-            password:req.body.password,
+            password: hashedPassword,
         });
         return res.status(201).send({response: createdUser});
     }
